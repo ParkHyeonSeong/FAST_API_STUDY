@@ -14,7 +14,7 @@ def user_login_compare(id, pwd):
         data = {'user_id' : id}
         token = jwt.encode(data, secret.SECRET_KEY, secret.ALGORITHM)
         print(token)
-        return "1"
+        return token
     else:   # 비밀번호 불일치
         return "2"
 
