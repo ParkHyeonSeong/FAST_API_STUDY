@@ -1,11 +1,11 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
-from fastapi.staticfiles import StaticFiles
-from fastapi.templating import Jinja2Templates
-from pydantic import BaseModel
-from urllib import parse
+from fastapi.staticfiles import StaticFiles # 정적파일 
+from fastapi.templating import Jinja2Templates  # 템플릿화
+from pydantic import BaseModel  # 예시 모델링
+from urllib import parse    # 데이터 url 인코딩
 
-import auth
+import auth # 인증 모듈 호출
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name = "static")
