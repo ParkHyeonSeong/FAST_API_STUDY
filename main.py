@@ -21,37 +21,27 @@ app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name = "static")
 templates = Jinja2Templates(directory="templates")
 
-@app.get('/', response_class=HTMLResponse)
+@app.get('/')
 async def page(request : Request):
-    return templates.TemplateResponse("index.html", {"request":request})    # 기본화면
+    return templates.TemplateResponse("/index.html", {"request":request})    # 기본화면
 
-@app.get("/login/", response_class=HTMLResponse)
+@app.post('/')
+async def page(request : Request, token : str):
+    return templates.TemplateResponse("/index.html", {"request":request})    # 기본화면
+
+@app.get("/login/")
 async def login(request : Request):
     id = ""
     pwd = ""
-    return templates.TemplateResponse("login.html", {"request":request, "id":id, "pwd":pwd})    # 로그인화면
+    return templates.TemplateResponse("/login.html", {"request":request, "id":id, "pwd":pwd})    # 로그인화면
 
-@app.post("/login/", response_class=HTMLResponse)
+@app.post("/login/")
 async def login_auth(request : Request, id : str = Form(...), pwd : str = Form(...)):
     info = {"id" : id, "pwd" : pwd}
     result = auth.user_login_compare(info["id"], info["pwd"])
     if result == "0" or result == "2":
-        return "Bad"
-        # return RedirectResponse("/login/")
+        return templates.TemplateResponse("/login.html", {"request":request, "id":id, "pwd":pwd, "error":"로그인 실패"})
     else :
-        return "Good"
-        # return RedirectResponse("/")
+        return RedirectResponse("/")
     # parse.urlencode(info) # 인코딩하여 값 전송
     # templates.TemplateResponse("index.html", {"request":request, "id" : id})
-
-"""
-@app.get("/post", response_class=HTMLResponse)
-async def post_test(request:Request):
-    id = ""
-    pwd = ""
-    return templates.TemplateResponse("post.html", {"request":request, "id":id, "pwd":pwd})
-
-@app.post("/post")
-async def post_test(request:Request, id: str = Form(...), pwd:str = Form(...)):
-    return id + pwd
-"""
