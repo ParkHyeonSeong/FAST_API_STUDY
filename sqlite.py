@@ -7,5 +7,10 @@ c = conn.cursor()   # 커서
 command = ""
 while command != "exit":
     command = input(">>")
-    c.execute(command)
+    try :
+        c.execute(command)
+    except :
+        print("명령어 실행 오류")
     print(c.fetchall())
+
+conn.close()
