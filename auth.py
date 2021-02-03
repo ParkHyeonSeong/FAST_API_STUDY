@@ -1,6 +1,6 @@
 import sqlite3
-print(sqlite3.version)
-print(sqlite3.sqlite_version)
+import jwt
+import secret
 
 def user_login_compare(id, pwd):
 
@@ -9,9 +9,12 @@ def user_login_compare(id, pwd):
     db_pwd = c.execute("SELECT password FROM USER_DB WHERE id='%s'" % id).fetchall()
     conn.close()
     if db_pwd == []:    # 데이터베이스에서 찾을 수 없음
-        return "계정이 존재하지 않습니다."
+        return "0"
     if pwd == db_pwd[0][0]: # id pwd 일치
-        return "로그인에 성공하였습니다"
+        data = {'user_id' : id}
+        token = jwt.encode(data, secret.SECRET_KEY, secret.ALGORITHM)
+        print(token)
+        return "1"
     else:   # 비밀번호 불일치
-        return "비밀번호가 일치하지 않습니다."
+        return "2"
 
