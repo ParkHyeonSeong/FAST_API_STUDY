@@ -22,7 +22,7 @@ async def login(request : Request):
 @app.get("/login/auth", response_class=HTMLResponse)
 async def login_auth(request : Request, id : str, pwd : str):
     info = {"id" : id, "pwd" : pwd}
-    result = auth.compare(info["id"], info["pwd"])
+    result = auth.user_login_compare(info["id"], info["pwd"])
     return result
     # parse.urlencode(info) # 인코딩하여 값 전송
     # templates.TemplateResponse("index.html", {"request":request, "id" : id})
